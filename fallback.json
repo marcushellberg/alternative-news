@@ -3,7 +3,7 @@
     {
       "title": "Dog fails to fetch articles, finds ball",
       "url": "",
-      "urlToImage": "/images/fetch-dog.jpg",
+      "urlToImage": "images/fetch-dog.jpg",
       "description": "Try loading the page again when you're online."
     }
   ]

@@ -42,7 +42,7 @@ async function networkFirst(event) {
     if (cachedResponse) {
       return cachedResponse;
     } else {
-      return caches.match('/fallback.json');
+      return caches.match('./fallback.json');
     }
   }
 
