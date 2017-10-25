@@ -18,32 +18,28 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  const requestURL = new URL(event.request.url);
-  if (requestURL.origin == location.origin) {
-    event.respondWith(cacheFirst(event));
+  const request = event.request;
+  const url = new URL(request.url);
+  if (url.origin == location.origin) {
+    event.respondWith(cacheFirst(request));
   } else {
-    event.respondWith(networkFirst(event));
+    event.respondWith(networkFirst(request));
   }
 });
 
-async function cacheFirst(event) {
-  const cachedResponse = await caches.match(event.request);
-  return cachedResponse || fetch(event.request);
+async function cacheFirst(request) {
+  const cachedResponse = await caches.match(request);
+  return cachedResponse || fetch(request);
 }
 
-async function networkFirst(event) {
+async function networkFirst(request) {
   const dynamicCache = await caches.open('news-dynamic');
   try {
-    const networkResponse = await fetch(event.request);
-    dynamicCache.put(event.request, networkResponse.clone());
+    const networkResponse = await fetch(request);
+    dynamicCache.put(request, networkResponse.clone());
     return networkResponse;
   } catch (err) {
-    const cachedResponse = await dynamicCache.match(event.request);
-    if (cachedResponse) {
-      return cachedResponse;
-    } else {
-      return caches.match('./fallback.json');
-    }
+    const cachedResponse = await dynamicCache.match(request);
+    return cachedResponse || await caches.match('./fallback.json');
   }
-
 }
