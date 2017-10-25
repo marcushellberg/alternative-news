@@ -1,7 +1,6 @@
 const apiKey = '6f4fa5447bb24a2687edecc4c1df43b4';
 const defaultSource = 'the-washington-post';
 const sourceSelector = document.querySelector('#sources');
-const loader = document.querySelector('.loader');
 const newsArticles = document.querySelector('main');
 
 if ('serviceWorker' in navigator) {
@@ -32,12 +31,10 @@ async function updateNewsSources() {
 
 async function updateNews(source = defaultSource) {
   newsArticles.innerHTML = '';
-  loader.classList.add('active');
   const response = await fetch(`https://newsapi.org/v1/articles?source=${source}&sortBy=top&apiKey=${apiKey}`);
   const json = await response.json();
   newsArticles.innerHTML =
     json.articles.map(createArticle).join('\n');
-  loader.classList.remove('active');
 }
 
 function createArticle(article) {
