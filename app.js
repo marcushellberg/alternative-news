@@ -21,7 +21,7 @@ window.addEventListener('load', e => {
 window.addEventListener('online', () => updateNews(sourceSelector.value));
 
 async function updateNewsSources() {
-  const response = await fetch(`https://newsapi.org/v1/sources?apiKey=${apiKey}`);
+  const response = await fetch(`https://newsapi.org/v2/sources?apiKey=${apiKey}`);
   const json = await response.json();
   sourceSelector.innerHTML =
     json.sources
@@ -31,7 +31,7 @@ async function updateNewsSources() {
 
 async function updateNews(source = defaultSource) {
   newsArticles.innerHTML = '';
-  const response = await fetch(`https://newsapi.org/v1/articles?source=${source}&sortBy=top&apiKey=${apiKey}`);
+  const response = await fetch(`https://newsapi.org/v2/top-headlines?sources=${source}&sortBy=top&apiKey=${apiKey}`);
   const json = await response.json();
   newsArticles.innerHTML =
     json.articles.map(createArticle).join('\n');
